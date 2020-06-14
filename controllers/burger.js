@@ -1,11 +1,40 @@
-exports.getIngredients = (req,res,next) => {
-    console.log("Getting Ingredients")
+const Ingredient = require("../models/ingredient");
+const Order = require("../models/order");
 
-    res.status(200).json({
-        salad: 0,
-        bacon: 0,
-        meat: 0,
-        cheese: 0
-    })
-}
+exports.getIngredients = async (req, res, next) => {
+	console.log("Getting Ingredients");
+	try {
+		const ingredients = await Ingredient.find();
+		const responseJson = {};
+		for (let ingredient of ingredients)
+			responseJson[ingredient.name] = ingredient.quantity;
+		res.status(200).json(responseJson);
+	} catch (err) {
+		throw err;
+	}
+};
 
+exports.getOrders = async (req, res, next) => {
+	console.log("Getting Orders");
+	try {
+		const orders = await Order.find();
+		res.status(200).json(orders);
+	} catch (err) {
+		throw err;
+	}
+};
+
+exports.postOrder = async (req, res, next) => {
+	console.log("Posting Order");
+	const order = new Order({
+		ingredients: req.body.ingredients,
+		price: req.body.price,
+		customer: req.body.customer,
+	});
+	try {
+		await order.save();
+		res.status(200).json(order);
+	} catch (err) {
+		throw err;
+	}
+};
