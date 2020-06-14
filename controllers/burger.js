@@ -10,7 +10,11 @@ exports.getIngredients = async (req, res, next) => {
 			responseJson[ingredient.name] = ingredient.quantity;
 		res.status(200).json(responseJson);
 	} catch (err) {
-		throw err;
+		if (!err.statusCode) {
+			err.statusCode = 500;
+		}
+		next(err);
+		return err;
 	}
 };
 
@@ -20,7 +24,11 @@ exports.getOrders = async (req, res, next) => {
 		const orders = await Order.find();
 		res.status(200).json(orders);
 	} catch (err) {
-		throw err;
+		if (!err.statusCode) {
+			err.statusCode = 500;
+		}
+		next(err);
+		return err;
 	}
 };
 
@@ -35,6 +43,10 @@ exports.postOrder = async (req, res, next) => {
 		await order.save();
 		res.status(200).json(order);
 	} catch (err) {
-		throw err;
+		if (!err.statusCode) {
+			err.statusCode = 500;
+		}
+		next(err);
+		return err;
 	}
 };
