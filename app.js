@@ -43,7 +43,7 @@ mongoose
 	})
 	.then((result) => {
 		console.log("connected to mongoDb Database");
-		console.log("server started at port " + process.env.PORT || 3000);
-		app.listen(process.env.PORT || 3000);
+		console.log("server started at port " + process.env.PORT || 4000);
+		app.listen(process.env.PORT || 4000);
 	})
 	.catch((err) => console.log(err));
